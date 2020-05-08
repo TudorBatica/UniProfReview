@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )]
         ),
         drawer: Drawer(
-          child: DrawerChild(username: "Username123")
+          child: DrawerChild()
         ),
       );
   }
