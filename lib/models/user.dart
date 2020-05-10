@@ -1,21 +1,9 @@
 class User {
   
-  final String _userID;
-  final String _username;
-  final double _avgRating;
+  final String userID;
+  final String username;
+  final double avgRating;
 
-  User(this._userID, this._username, this._avgRating);
-
-  String get userID {
-    return this._userID;
-  }
-
-  String get username {
-    return this._username;
-  }
-
-  double get avgRating {
-    return this._avgRating;
-  }
+  User(this.userID, this.username, this.avgRating);
 
 }
