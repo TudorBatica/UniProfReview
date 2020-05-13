@@ -1,28 +1,38 @@
+import 'package:professor_review/models/review_summary_professor.dart';
+
 class Professor {
-  final String documentID;
+  final double averageRating;
+  final String facultyName;
   final String facultyReference;
   final String firstName;
   final String lastName;
+  final int numberOfReviews;
+  final List<ReviewSummaryProfessor> reviews;
+  final String universityName;
   final String universityReference;
-  int numberOfReviews;
-  double averageRating;
 
   Professor(
-      {this.firstName,
-      this.lastName,
-      this.documentID,
+      {this.averageRating,
+      this.facultyName,
       this.facultyReference,
-      this.universityReference,
+      this.firstName,
+      this.lastName,
       this.numberOfReviews,
-      this.averageRating});
+      this.reviews,
+      this.universityName,
+      this.universityReference});
 
-  Professor.fromFirestoreMap(Map<String, dynamic> map,
-      String universityReference, String facultyReference)
-      : documentID = map['prof_ref'],
-        facultyReference = facultyReference,
-        firstName = map['first_name'],
-        lastName = map['last_name'],
-        universityReference = universityReference,
-        numberOfReviews = map['no_of_reviews'],
-        averageRating = map['avg_rating'].toDouble();
+  factory Professor.fromMap(Map<String, dynamic> map) => Professor(
+      averageRating: map['avg_rating'].toDouble(),
+      facultyName: map['fac_name'],
+      facultyReference: map['fac_ref'],
+      firstName: map['first_name'],
+      lastName: map['last_name'],
+      numberOfReviews: map['no_of_reviews'],
+      reviews: map['reviews']
+          .map<ReviewSummaryProfessor>(
+              (review) => ReviewSummaryProfessor.fromMap(review))
+          .toList(),
+      universityName: map['uni_name'],
+      universityReference: map['uni_ref']);
 }

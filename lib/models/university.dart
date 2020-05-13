@@ -1,25 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:professor_review/models/faculty_summary_data.dart';
 
 class University {
-  
+  final double averageRating;
   final String city;
   final String country;
+  final List<FacultySummaryData> faculties;
   final String name;
-  final String documentID;
-  double avgRating;
-  int noOfFaculties;
-  var faculties = List<FacultySummaryData>();
 
-  University.fromFirestoreDocument(DocumentSnapshot snapshot):
-  city = snapshot['city'],
-  country = snapshot['country'],
-  name = snapshot['name'],
-  documentID = snapshot.documentID,
-  avgRating = snapshot['avg_rating'].toDouble(),
-  noOfFaculties = snapshot['no_of_fac'] {
-    faculties = snapshot['faculties'].map<FacultySummaryData>((faculty) {
-      return FacultySummaryData.fromMap(faculty);
-    }).toList();
-  }
+  University(
+      {this.averageRating, this.city, this.country, this.faculties, this.name});
+
+  factory University.fromMap(Map<String, dynamic> map) => University(
+      averageRating: map['avg_rating'],
+      city: map['city'],
+      country: map['country'],
+      faculties: map['faculties']
+          .map<FacultySummaryData>(
+              (faculty) => FacultySummaryData.fromMap(faculty))
+          .toList(),
+      name: map['name']);
 }

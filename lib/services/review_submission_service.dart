@@ -5,7 +5,7 @@ import 'package:professor_review/models/review.dart';
 import 'package:professor_review/models/university.dart';
 import 'package:tuple/tuple.dart';
 
-class ReviewSubmissionService {
+/*class ReviewSubmissionService {
   static final ReviewSubmissionService _instance =
       ReviewSubmissionService._privateConstructor();
 
@@ -148,4 +148,4 @@ Future _updateUniversityDocument(Professor professor, Review review,
       .document(university.documentID)
       .updateData(
           {"faculties": FieldValue.arrayUnion([toAdd])});
-}
+}*/

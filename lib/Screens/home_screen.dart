@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         MaterialButton(
-          onPressed: () {
+          onPressed: () {/*
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             universityReference: "awtpNwbuqcUIExbkO3nw"),
                       )),
             );
-          },
+          */},
           child: Text("Submit_Review_Screen"),
           color: Colors.grey,
         )

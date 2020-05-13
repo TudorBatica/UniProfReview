@@ -27,7 +27,7 @@ class AuthService {
     }); 
 
       // return result
-      return firebaseUser != null ? User(firebaseUser.uid, firebaseUser.displayName, 0) : null;
+      return firebaseUser;
 
     } catch (e) {
       print(e.toString());
@@ -39,7 +39,7 @@ class AuthService {
     try {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);    
     FirebaseUser firebaseUser = result.user;
-    return firebaseUser != null ? User(firebaseUser.uid, firebaseUser.displayName, 0) : null;
+    return firebaseUser;
     } catch (e) {
       return null;
     }
