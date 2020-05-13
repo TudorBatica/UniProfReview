@@ -3,7 +3,7 @@ import 'package:professor_review/models/professor.dart';
 import 'package:professor_review/models/review.dart';
 import 'package:professor_review/services/review_submission_service.dart';
 
-class SubmitReviewScreen extends StatefulWidget {
+/*class SubmitReviewScreen extends StatefulWidget {
   final Professor professor;
 
   SubmitReviewScreen({Key key, this.professor}) : super(key: key);
@@ -97,3 +97,4 @@ class _SubmitReviewScreenState extends State<SubmitReviewScreen> {
         ));
   }
 }
+*/

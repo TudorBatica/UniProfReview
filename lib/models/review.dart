@@ -1,34 +1,54 @@
 class Review {
-  String title;
-  String pros;
-  String cons;
-  double courseSubjectsRating;
-  double explanationsRating;
-  double examsDifficultyRating;
-  double punctualityRating;
-  double rating;
+  final String author;
+  final String authorReference;
+  final String cons;
+  final double courseSubjectsRating;
+  final double explanationsRating;
+  final String facultyName;
+  final String facultyReference;
+  final String professorFirstName;
+  final String professorLastName;
+  final String professorReference;
+  final String pros;
+  final double punctualityRating;
+  final double rating;
+  final String title;
+  final String universityName;
+  final String universityReference;
 
   Review(
-      {this.title,
-      this.pros,
+      {this.author,
+      this.authorReference,
       this.cons,
       this.courseSubjectsRating,
       this.explanationsRating,
-      this.examsDifficultyRating,
+      this.facultyName,
+      this.facultyReference,
+      this.professorFirstName,
+      this.professorLastName,
+      this.professorReference,
+      this.pros,
       this.punctualityRating,
-      this.rating});
+      this.rating,
+      this.title,
+      this.universityName,
+      this.universityReference});
 
-  Map<String, dynamic> get map {
-    final Map<String, dynamic> mappedData = {
-      "title": title,
-      "pros": pros,
-      "cons": cons,
-      "courseSubjectRating": courseSubjectsRating,
-      "explanationsRating": explanationsRating,
-      "punctualityRating": punctualityRating,
-      "rating": rating
-    };
-
-    return mappedData;
-  }
+  factory Review.fromMap(Map<String, dynamic> map) => Review(
+      author: map['author'],
+      authorReference: map['author_reference'],
+      cons: map['cons'],
+      courseSubjectsRating: map['course_subjects_rating'].toDouble(),
+      explanationsRating: map['explanations_rating'].toDouble(),
+      facultyName: map['faculty_name'],
+      facultyReference: map['faculty_reference'],
+      professorFirstName: map['professor_first_name'],
+      professorLastName: map['professor_last_name'],
+      professorReference: map['professor_reference'],
+      pros: map['pros'],
+      punctualityRating: map['punctuality_rating'].toDouble(),
+      rating: map['rating'].toDouble(),
+      title: map['title'],
+      universityName: map['university_name'],
+      universityReference: map['university_reference']);
 }

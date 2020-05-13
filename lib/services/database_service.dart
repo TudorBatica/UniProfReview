@@ -1,6 +1,81 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:professor_review/models/faculty.dart';
+import 'package:professor_review/models/professor.dart';
+import 'package:professor_review/models/review.dart';
+import 'package:professor_review/models/university.dart';
+import 'package:professor_review/models/user.dart';
+
 class DatabaseService {
-  // this service is used to interact with the firestore database
+  //* this is the service that interacts with
+  //* the firestore database
 
-  
+  static final DatabaseService instance = DatabaseService._privateConstructor();
+  DatabaseService._privateConstructor();
 
+  //* streams from the firestore database
+
+  Stream<User> userProfile(String userID) {
+    try {
+      return Firestore.instance
+          .collection('users')
+          .document(userID)
+          .snapshots()
+          .asyncMap((event) => User.fromMap(event.data));
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Stream<Review> review(String reviewDocumentID) {
+    try {
+      return Firestore.instance
+          .collection('reviews')
+          .document(reviewDocumentID)
+          .snapshots()
+          .asyncMap((event) => Review.fromMap(event.data));
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Stream<Professor> professor(String professorDocumentID) {
+    try {
+      return Firestore.instance
+          .collection('professors')
+          .document(professorDocumentID)
+          .snapshots()
+          .asyncMap((event) => Professor.fromMap(event.data));
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Stream<Faculty> faculty(String facultyDocumentID) {
+    try {
+      return Firestore.instance
+          .collection('faculties')
+          .document(facultyDocumentID)
+          .snapshots()
+          .asyncMap((event) => Faculty.fromMap(event.data));
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Stream<University> university(String universityDocumentID) {
+    try {
+      return Firestore.instance
+          .collection('universities')
+          .document(universityDocumentID)
+          .snapshots()
+          .asyncMap((event) => University.fromMap(event.data));
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }
