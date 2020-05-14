@@ -25,18 +25,24 @@ class InformationListTile extends StatelessWidget {
               Container(
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Center(
-                      child: Icon(
-                    information.icon,
-                    color: Color.fromRGBO(0, 0, 0, 0.8),
-                    size: 30,
-                  ))),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Text(
-                  information.text,
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 0.8), fontSize: 22.0),
+                      child: information.icon != null
+                          ? Icon(
+                              information.icon,
+                              color: Color.fromRGBO(0, 0, 0, 0.8),
+                              size: 30,
+                            )
+                          : Text(information.leadingText, style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold
+                          ),))),
+              Expanded(
+                child: Container(
+                  child: Text(
+                    information.text,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                        color: Color.fromRGBO(0, 0, 0, 0.8), fontSize: 22.0),
+                  ),
                 ),
               ),
             ],
