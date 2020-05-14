@@ -14,6 +14,7 @@ class EntityScreenHeader extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).size.height * 0.025,),
           Text(
             entityName,
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Color.fromRGBO(0, 0, 0, 0.7),
               fontSize: 28.0,

@@ -11,7 +11,7 @@ class University {
       {this.averageRating, this.city, this.country, this.faculties, this.name});
 
   factory University.fromMap(Map<String, dynamic> map) => University(
-      averageRating: map['avg_rating'],
+      averageRating: map['avg_rating'].toDouble(),
       city: map['city'],
       country: map['country'],
       faculties: map['faculties']
