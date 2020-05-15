@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:professor_review/models/faculty.dart';
 import 'package:professor_review/models/professor.dart';
 import 'package:professor_review/models/review.dart';
 import 'package:professor_review/models/university.dart';
 import 'package:tuple/tuple.dart';
 
-/*class ReviewSubmissionService {
+class ReviewSubmissionService {
   static final ReviewSubmissionService _instance =
       ReviewSubmissionService._privateConstructor();
 
