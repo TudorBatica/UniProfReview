@@ -7,7 +7,8 @@ that our society demands and valuable feedback to the professors.
 ## How to build  
 
 This project is being developed using Flutter, so you need to set up Flutter
-on your computer. After that, simply download or clone the project and run
+on your computer.  
+After that, simply download or clone the project and run
 `flutter run`.  
 
 ## Features
