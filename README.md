@@ -11,16 +11,4 @@ on your computer.
 After that, simply download or clone the project and run
 `flutter run`.  
 
-## Features
-
-The following list provides only the implemented features. To read about
-all the features that will be included in the final version, as well as the 
-motivation behind them, check out our user stories.  
-
-### User profile screen 
-
-### Faculty profile screen
-
-### University profile screen
-
 
