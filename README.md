@@ -1,16 +1,25 @@
-# professor_review
+# Professor review
 
-A new Flutter project.
+A mobile application for reviewing university professors.  
+The objective of this app is to provide the much needed transparency
+that our society demands and valuable feedback to the professors.  
 
-## Getting Started
+## How to build  
 
-This project is a starting point for a Flutter application.
+This project is being developed using Flutter, so you need to set up Flutter
+on your computer. After that, simply download or clone the project and run
+'flutter run'.  
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+The following list provides only the implemented features. To read about
+all the features that will be included in the final version, as well as the 
+motivation behind them, check out our user stories.  
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### User profile screen 
+
+### Faculty profile screen
+
+### University profile screen
+
+
