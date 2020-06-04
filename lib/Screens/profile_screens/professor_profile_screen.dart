@@ -1,11 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:professor_review/Screens/professor_profile_screen.dart';
-import 'package:professor_review/Screens/university_profile_screen.dart';
-import 'package:professor_review/models/faculty.dart';
+import 'package:professor_review/screens/profile_screens/faculty_profile_screen.dart';
+import 'package:professor_review/screens/review_screen.dart';
+import 'package:professor_review/screens/profile_screens/university_profile_screen.dart';
 import 'package:professor_review/models/information_list_tile_data.dart';
 import 'package:professor_review/models/preview_list_tile_data.dart';
+import 'package:professor_review/models/professor.dart';
 import 'package:professor_review/services/database_service.dart';
 import 'package:professor_review/widgets/entity_screen_header.dart';
 import 'package:professor_review/widgets/information_list_tile.dart';
@@ -13,23 +13,22 @@ import 'package:professor_review/widgets/loading.dart';
 import 'package:professor_review/widgets/preview_list_tile.dart';
 import 'package:provider/provider.dart';
 
-class FacultyProfileScreen extends StatelessWidget {
+class ProfessorProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var _faculty = Provider.of<Faculty>(context);
+    var _professor = Provider.of<Professor>(context);
 
-    // the information for the info tiles of this screen
+    // the information for the first tiles of this screen
     var informationDataList = <InformationListTileData>[
       InformationListTileData(
-          icon: Icons.school, text: _faculty.universityName),
+          icon: Icons.school, text: _professor.universityName),
       InformationListTileData(
-          icon: Icons.location_on,
-          text: _faculty.city + ", " + _faculty.country),
+          icon: Icons.location_city, text: _professor.facultyName),
       InformationListTileData(
-          icon: Icons.school,
-          text: _faculty.professors.length != 1
-              ? _faculty.professors.length.toString() + " professors"
-              : _faculty.professors.length.toString() + " professor")
+          icon: Icons.check_box,
+          text: _professor.reviews.length != 1
+              ? _professor.reviews.length.toString() + " reviews"
+              : _professor.reviews.length.toString() + " review")
     ];
 
     // what to happen when the info tiles are pressed
@@ -39,13 +38,19 @@ class FacultyProfileScreen extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => StreamProvider(
                   create: (_) => DatabaseService.instance
-                      .university(_faculty.universityReference),
+                      .university(_professor.universityReference),
                   child: UniversityProfileScreen()))),
-      () {},
+      () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StreamProvider(
+                  create: (_) => DatabaseService.instance
+                      .faculty(_professor.facultyReference),
+                  child: FacultyProfileScreen()))),
       () {}
     ];
 
-    return _faculty == null
+    return _professor == null
         ? Loading()
         : Scaffold(
             backgroundColor: Theme.of(context).primaryColor,
@@ -56,9 +61,10 @@ class FacultyProfileScreen extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: EntityScreenHeader(
-                      averageRating: _faculty.averageRating,
+                      averageRating: _professor.averageRating,
                       averageRatingTitle: "Average rating",
-                      entityName: _faculty.name),
+                      entityName:
+                          _professor.firstName + " " + _professor.lastName),
                 ),
                 SizedBox(height: 25),
                 Expanded(
@@ -70,7 +76,7 @@ class FacultyProfileScreen extends StatelessWidget {
                             topRight: Radius.circular(40.0)),
                       ),
                       child: ListView.builder(
-                          itemCount: _faculty.professors.length +
+                          itemCount: _professor.reviews.length +
                               informationDataList.length,
                           itemBuilder: (context, index) => index <
                                   informationDataList.length
@@ -92,45 +98,36 @@ class FacultyProfileScreen extends StatelessWidget {
                                           builder: (context) => StreamProvider(
                                               create: (_) => DatabaseService
                                                   .instance
-                                                  .professor(_faculty
-                                                      .professors[index -
+                                                  .review(_professor
+                                                      .reviews[index -
                                                           informationDataList
                                                               .length]
-                                                      .professorReference),
-                                              child:
-                                                  ProfessorProfileScreen()))),
+                                                      .reviewReference),
+                                              child: ReviewScreen()))),
                                   child: Padding(
                                     padding: const EdgeInsets.all(15.0),
                                     child: PreviewListTile(
                                       data: PreviewListTileData(
                                           data: [
                                             InformationListTileData(
-                                                icon: Icons.location_city,
-                                                text: _faculty
-                                                        .professors[index -
-                                                            informationDataList
-                                                                .length]
-                                                        .firstName +
-                                                    " " +
-                                                    _faculty
-                                                        .professors[index -
-                                                            informationDataList
-                                                                .length]
-                                                        .lastName),
+                                                icon: Icons.person_outline,
+                                                text: _professor
+                                                    .reviews[index -
+                                                        informationDataList
+                                                            .length]
+                                                    .author),
                                             InformationListTileData(
-                                                icon: Icons.check_box,
-                                                text: _faculty
-                                                        .professors[index -
-                                                            informationDataList
-                                                                .length]
-                                                        .numberOfReviews
-                                                        .toString() +
-                                                    " reviews"),
+                                                icon: Icons.chat,
+                                                text: _professor
+                                                    .reviews[index -
+                                                        informationDataList
+                                                            .length]
+                                                    .title),
                                           ],
-                                          rating: _faculty
-                                              .professors[index -
+                                          rating: _professor
+                                              .reviews[index -
                                                   informationDataList.length]
-                                              .averageRating),
+                                              .rating),
                                     ),
                                   ),
                                 ))),

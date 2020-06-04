@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:professor_review/Screens/faculty_profile_screen.dart';
+import 'package:professor_review/screens/profile_screens/faculty_profile_screen.dart';
 import 'package:professor_review/models/information_list_tile_data.dart';
 import 'package:professor_review/models/preview_list_tile_data.dart';
 import 'package:professor_review/models/university.dart';

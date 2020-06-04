@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:professor_review/Screens/search_screen.dart';
+import 'package:professor_review/models/user.dart';
 import 'package:professor_review/widgets/drawer_child.dart';
 import 'package:professor_review/widgets/search_bar.dart';
+import 'package:provider/provider.dart';
+
+import 'auth_screens/auth_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   
+  
+
   @override
   Widget build(BuildContext context) {
+
+    //var _user = Provider.of<User>(context);
+    
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
