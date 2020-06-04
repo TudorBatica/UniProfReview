@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:professor_review/Screens/search_screen.dart';
 import 'package:professor_review/models/user.dart';
 import 'package:professor_review/screens/profile_screens/user_profile_screen.dart';
 import 'package:professor_review/services/auth_service.dart';
 import 'package:professor_review/services/database_service.dart';
 import 'package:professor_review/widgets/custom_app_bar.dart';
-import 'package:professor_review/widgets/drawer_child.dart';
-import 'package:professor_review/widgets/search_bar.dart';
+import 'package:professor_review/widgets/loading.dart';
 import 'package:professor_review/widgets/two_part_card.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var _userProfile = Provider.of<User>(context);
 
-    return Scaffold(
+    return _userProfile == null ? Loading() : Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,
         appBar: _homeScreenAppBar(context),
         body: Padding(
@@ -204,59 +202,32 @@ class HomeScreen extends StatelessWidget {
           TwoPartCard(
             width: MediaQuery.of(context).size.width * 0.8,
             imageHeight: MediaQuery.of(context).size.height * 0.2,
+            imageWidth: MediaQuery.of(context).size.width * 0.8,
             image: Image.asset('images/university.jpg'),
-            bottom: Text('University of Bucharest', 
-            style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-              fontWeight: FontWeight.w800
-            ),),
+            bottom: Text(
+              'University of Bucharest',
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.w800),
+            ),
           ),
-          SizedBox(width: 10,),
+          SizedBox(
+            width: 10,
+          ),
           TwoPartCard(
             width: MediaQuery.of(context).size.width * 0.8,
             imageHeight: MediaQuery.of(context).size.height * 0.2,
+            imageWidth: MediaQuery.of(context).size.width * 0.8,
             image: Image.asset('images/university.jpg'),
-            bottom: Text('University of Bucharest', 
-            style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-              fontWeight: FontWeight.w800
-            ),),
+            bottom: Text(
+              'University of Bucharest',
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.w800),
+            ),
           )
         ],
       ),
     );
   }
-
-/*return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 0.0,
-      ),
-      body: Column(children: [
-        SizedBox(height: 20),
-        Center(
-            child: Hero(
-          tag: "SearchBar",
-          child: SearchBar(
-            autoFocus: false,
-            width: MediaQuery.of(context).size.width * 0.9,
-            hintText: "Search professors or universities...",
-            hintTextFontSize: 18.0,
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SearchScreen())),
-          ),
-        )),
-        SizedBox(height: 50),
-        Expanded(
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0)))))
-      ]),
-      drawer: Drawer(child: DrawerChild()),
-    );*/
 }

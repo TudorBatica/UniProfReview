@@ -9,6 +9,7 @@ class TwoPartCard extends StatelessWidget {
   final Widget bottom;
   final Image image;
   final double imageHeight;
+  final double imageWidth;
   final double width;
 
   const TwoPartCard(
@@ -16,6 +17,7 @@ class TwoPartCard extends StatelessWidget {
       this.bottom,
       @required this.image,
       @required this.imageHeight,
+      this.imageWidth,
       this.width})
       : super(key: key);
 
@@ -29,13 +31,17 @@ class TwoPartCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorLight,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [BoxShadow()]),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0), child: image)),
+          Center(
+            child: Container(
+                height: imageHeight,
+                width: imageWidth,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorLight,
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [BoxShadow()]),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0), child: image)),
+          ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: bottom ?? SizedBox(),
