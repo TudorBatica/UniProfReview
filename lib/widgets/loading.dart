@@ -9,7 +9,7 @@ class Loading extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
       child: SpinKitDoubleBounce(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).primaryColorDark,
         size: 50.0,
       )
     );

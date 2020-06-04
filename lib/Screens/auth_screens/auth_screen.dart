@@ -5,15 +5,21 @@ import 'package:professor_review/screens/auth_screens/register_screen.dart';
 class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColorDark,
-      body: Column(
-        children: <Widget>[
-          _topContainer(context),
-          Container(
-            child: Image.asset('images/auth.png'),
-          )
-        ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColorDark,
+        body: Column(
+          children: <Widget>[
+            _topContainer(context),
+            Container(
+                child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30.0),
+                        bottomRight: Radius.circular(30.0)),
+                    child: Image.asset('images/auth.png'))),
+          ],
+        ),
       ),
     );
   }
