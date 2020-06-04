@@ -205,11 +205,22 @@ class HomeScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.8,
             imageHeight: MediaQuery.of(context).size.height * 0.2,
             image: Image.asset('images/university.jpg'),
+            bottom: Text('University of Bucharest', 
+            style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+              fontWeight: FontWeight.w800
+            ),),
           ),
-           TwoPartCard(
+          SizedBox(width: 10,),
+          TwoPartCard(
             width: MediaQuery.of(context).size.width * 0.8,
             imageHeight: MediaQuery.of(context).size.height * 0.2,
             image: Image.asset('images/university.jpg'),
+            bottom: Text('University of Bucharest', 
+            style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+              fontWeight: FontWeight.w800
+            ),),
           )
         ],
       ),

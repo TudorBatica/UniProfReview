@@ -12,14 +12,22 @@ class TwoPartCard extends StatelessWidget {
   final double width;
 
   const TwoPartCard(
-      {Key key, this.bottom, this.image, this.imageHeight, this.width})
+      {Key key,
+      this.bottom,
+      @required this.image,
+      @required this.imageHeight,
+      this.width})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColorLight,
+          borderRadius: BorderRadius.circular(20.0)),
       width: this.width,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
               decoration: BoxDecoration(
@@ -28,6 +36,10 @@ class TwoPartCard extends StatelessWidget {
                   boxShadow: [BoxShadow()]),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0), child: image)),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: bottom ?? SizedBox(),
+          )
         ],
       ),
     );
