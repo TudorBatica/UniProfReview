@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:professor_review/Screens/login_screen.dart';
-import 'package:professor_review/Screens/register_screen.dart';
-import 'package:professor_review/Screens/user_profile_screen.dart';
+import 'package:professor_review/screens/auth_screens/login_screen.dart';
+import 'package:professor_review/screens/auth_screens/register_screen.dart';
+import 'package:professor_review/screens/profile_screens/user_profile_screen.dart';
 import 'package:professor_review/services/auth_service.dart';
 import 'package:professor_review/services/database_service.dart';
 import 'package:professor_review/widgets/custom_button.dart';
@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 class DrawerChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     var _user = Provider.of<FirebaseUser>(context);
 
     return Column(children: <Widget>[
