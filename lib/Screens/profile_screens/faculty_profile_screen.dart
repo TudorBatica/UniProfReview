@@ -36,7 +36,7 @@ class FacultyProfileScreen extends StatelessWidget {
                             color: Theme.of(context).primaryColorLight)),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  // reviews row
+                  // professors row
                   Padding(
                     padding: EdgeInsets.only(left: 15.0),
                     child: _professorsScrollView(context, _faculty.professors),
