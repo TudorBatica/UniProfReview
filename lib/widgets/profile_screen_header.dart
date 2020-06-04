@@ -18,7 +18,7 @@ class ProfileScreenHeader extends StatelessWidget {
       children: <Widget>[
         Column(children: <Widget>[
           TwoPartCard(
-              image: Image.asset('images/user.png'),
+              image: image,
               imageHeight: MediaQuery.of(context).size.height * 0.3,
               imageWidth: MediaQuery.of(context).size.width,
               width: MediaQuery.of(context).size.width,
@@ -30,7 +30,7 @@ class ProfileScreenHeader extends StatelessWidget {
               )),
           SizedBox(height: MediaQuery.of(context).size.height * 0.065)
         ]),
-        Positioned(bottom: 0.0, left: 10.0, child: bottomInformation)
+        Positioned(bottom: 12.5, left: 10.0, child: bottomInformation)
       ],
     );
   }
