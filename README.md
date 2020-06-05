@@ -15,7 +15,7 @@ After that, simply download or clone the project and run
 
 First, you need to create an account (or login if you already have one).  
 
-<img src="images/screenshots/auth.jpeg"  width="250" height="430">
+<img src="images/screenshots/auth.jpeg"  width="250" height="460">
 <img src="images/screenshots/login.jpeg"  width="250" height="430">
 <img src="images/screenshots/register.jpeg"  width="250" height="430">  
 
