@@ -1,6 +1,7 @@
 # Professor review
 
 A mobile application for reviewing university professors.  
+Developed using Flutter and Firebase.  
 The objective of this app is to provide the much needed transparency
 that our society demands and valuable feedback to the professors.  
 
