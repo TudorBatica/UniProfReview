@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:professor_review/models/faculty.dart';
 import 'package:professor_review/models/professor.dart';
 import 'package:professor_review/models/review.dart';
+import 'package:professor_review/models/search_result.dart';
 import 'package:professor_review/models/top3_universities.dart';
 import 'package:professor_review/models/university.dart';
+import 'package:professor_review/models/university_search_result.dart';
 import 'package:professor_review/models/user.dart';
 
 class DatabaseService {
@@ -92,5 +94,43 @@ class DatabaseService {
       print(e.toString());
       return null;
     }
+  }
+
+  Future<List<SearchResult>> fetchUniversitiesAndProfessorsByName(
+      String name) async {
+    // query universities collection
+    var queryDocuments = (await Firestore.instance
+            .collection('universities')
+            .where("name", isEqualTo: name)
+            .getDocuments())
+        .documents;
+    print("GASITE  " + queryDocuments.length.toString());
+    List<SearchResult> queryResults = [];
+    for (var doc in queryDocuments) {
+      queryResults
+          .add(SearchResult.fromUniversityMap(doc.data, doc.documentID));
+    }
+    // query professors by first name
+    queryDocuments = (await Firestore.instance
+            .collection('professors')
+            .where("first_name", isEqualTo: name)
+            .getDocuments())
+        .documents;
+    for (var doc in queryDocuments) {
+      queryResults
+          .add(SearchResult.fromProfessorMap(doc.data, doc.documentID));
+    }
+    // query professors by last name
+    queryDocuments = (await Firestore.instance
+            .collection('professors')
+            .where("last_name", isEqualTo: name)
+            .getDocuments())
+        .documents;
+    for (var doc in queryDocuments) {
+      queryResults
+          .add(SearchResult.fromProfessorMap(doc.data, doc.documentID));
+    }
+
+    return queryResults;
   }
 }

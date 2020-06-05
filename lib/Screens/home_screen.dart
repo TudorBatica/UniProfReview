@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:professor_review/models/top3_universities.dart';
 import 'package:professor_review/models/top_university_preview_data.dart';
 import 'package:professor_review/models/user.dart';
+import 'package:professor_review/screens/list_screen.dart';
+import 'package:professor_review/screens/profile_screens/university_profile_screen.dart';
 import 'package:professor_review/screens/profile_screens/user_profile_screen.dart';
 import 'package:professor_review/services/auth_service.dart';
 import 'package:professor_review/services/database_service.dart';
@@ -11,13 +13,14 @@ import 'package:professor_review/widgets/loading.dart';
 import 'package:professor_review/widgets/two_part_card.dart';
 import 'package:provider/provider.dart';
 
+
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _userProfile = Provider.of<User>(context);
     var _topUnis = Provider.of<Top3Universities>(context);
 
-    return _userProfile == null
+    return (_userProfile == null || _topUnis == null)
         ? Loading()
         : Scaffold(
             backgroundColor: Theme.of(context).primaryColorDark,
@@ -44,31 +47,38 @@ class HomeScreen extends StatelessWidget {
                             fontWeight: FontWeight.w900)),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     // a fake search bar that leads to the search screen
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      height: MediaQuery.of(context).size.height * 0.065,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorLight,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Center(
-                        child: Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.search,
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('Search professors or universities...',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16.0,
-                                    color: Theme.of(context).primaryColorDark)),
-                          ],
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListScreen())),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        height: MediaQuery.of(context).size.height * 0.065,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorLight,
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: Center(
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.search,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text('Search professors or universities...',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.0,
+                                      color:
+                                          Theme.of(context).primaryColorDark)),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -210,26 +220,33 @@ class HomeScreen extends StatelessWidget {
         continue;
       }
       topUniversitiesWidgets.add(
-        TwoPartCard(
-          width: MediaQuery.of(context).size.width * 0.8,
-          imageHeight: MediaQuery.of(context).size.height * 0.2,
-          imageWidth: MediaQuery.of(context).size.width * 0.8,
-          image: Image.asset('images/university.jpg'),
-          bottom: Text(
-            uni.name,
-            style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
-                fontWeight: FontWeight.w800),
+        GestureDetector(
+          child: TwoPartCard(
+            width: MediaQuery.of(context).size.width * 0.8,
+            imageHeight: MediaQuery.of(context).size.height * 0.2,
+            imageWidth: MediaQuery.of(context).size.width * 0.8,
+            image: Image.asset('images/university.jpg'),
+            bottom: Text(
+              uni.name,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.w800),
+            ),
           ),
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => StreamProvider(
+                      create: (_) =>
+                          DatabaseService.instance.university(uni.reference),
+                      child: UniversityProfileScreen()))),
         ),
       );
     }
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
-        children: topUniversitiesWidgets
-      ),
+      child: Row(children: topUniversitiesWidgets),
     );
   }
 }

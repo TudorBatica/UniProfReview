@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:professor_review/widgets/search_bar.dart';
 
-class SearchScreen extends StatelessWidget {
+/*class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,4 +18,4 @@ class SearchScreen extends StatelessWidget {
       ),
     );
   }
-}
+}*/

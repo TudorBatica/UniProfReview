@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget {
+/*class SearchBar extends StatelessWidget {
   final bool autoFocus;
   final double height;
   final String hintText;
@@ -41,4 +41,4 @@ class SearchBar extends StatelessWidget {
       ),
     );
   }
-}
+}*/
