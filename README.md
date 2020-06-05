@@ -15,6 +15,8 @@ After that, simply download or clone the project and run
 
 First, you need to create an account (or login if you already have one).  
 
+![](images/screenshots/auth.jpeg)
+
 On the home screen, you will find a search bar, a list of the best rated 
 universities and two icons on the right corner of the top bar. 
 Press the icon on the right to logout.  
