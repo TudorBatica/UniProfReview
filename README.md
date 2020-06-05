@@ -40,11 +40,13 @@ the review and one with the professor that the user reviewed. Pressing either
 one will take you to a profile screen.  
 
 At the top of a professor's profile screen, you will find the professor's university
-and their faculty. You can press either one and it will take to a profile screen.  
+and their faculty. You can press either one and it will take to a profile screen.    
+<img src="images/screenshots/professor_profile_screen.jpeg"  width="250" height="480">  
+
 Below that, you will see the professor's rating and a list of their reviews.
 You will also see a Add Review button. Pressing it will take you to the 
 review submittion screen.  
-<img src="images/screenshots/professor_profile_screen.jpeg"  width="250" height="480">
+
 <img src="images/screenshots/submit_review.jpeg"  width="250" height="480">  
 
 To search for a specific professor or university, go back to the home screen
