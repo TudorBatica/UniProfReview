@@ -5,7 +5,6 @@ import 'package:professor_review/models/review.dart';
 import 'package:professor_review/models/search_result.dart';
 import 'package:professor_review/models/top3_universities.dart';
 import 'package:professor_review/models/university.dart';
-import 'package:professor_review/models/university_search_result.dart';
 import 'package:professor_review/models/user.dart';
 
 class DatabaseService {
