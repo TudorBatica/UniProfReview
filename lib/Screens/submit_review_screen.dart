@@ -5,6 +5,7 @@ import 'package:professor_review/models/user.dart';
 import 'package:professor_review/services/review_submission_service.dart';
 import 'package:professor_review/widgets/custom_app_bar.dart';
 import 'package:professor_review/widgets/entity_box.dart';
+import 'package:professor_review/widgets/loading.dart';
 import 'package:professor_review/widgets/two_weights_box.dart';
 import 'package:provider/provider.dart';
 
@@ -26,11 +27,13 @@ class _SubmitReviewScreenState extends State<SubmitReviewScreen> {
   double _explanationsRating = 5.0;
   double _punctualityRating = 5.0;
 
+  bool _loading = false;
+
   @override
   Widget build(BuildContext context) {
     var _user = Provider.of<User>(context);
 
-    return Scaffold(
+    return _loading ? Loading() : Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       appBar: _reviewScreenAppBar(context),
       body: SingleChildScrollView(
@@ -176,6 +179,9 @@ class _SubmitReviewScreenState extends State<SubmitReviewScreen> {
           // submit button
           GestureDetector(
             onTap: () {
+              setState(() {
+                _loading = true;
+              });
               _courseSubjectsRating =
                   double.parse(_courseSubjectsRating.toStringAsFixed(2));
               _explanationsRating =
@@ -205,7 +211,9 @@ class _SubmitReviewScreenState extends State<SubmitReviewScreen> {
                   universityName: widget.professor.universityName,
                   universityReference: widget.professor.universityReference);
               
-              ReviewSubmissionService.instance.submitReview(review);
+              ReviewSubmissionService.instance.submitReview(review).then((_) {
+                Navigator.pop(context);
+              });
             },
             child: TwoWeightsBox(
               boldedText: "Submit",
@@ -217,6 +225,7 @@ class _SubmitReviewScreenState extends State<SubmitReviewScreen> {
       ),
     );
   }
+
 
   Widget _reviewScreenAppBar(context) {
     return CustomAppBar(
