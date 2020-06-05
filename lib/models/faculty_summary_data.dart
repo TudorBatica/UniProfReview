@@ -2,7 +2,7 @@ class FacultySummaryData {
   // this class is used to get and send data
   // from/to an university document in firestore
 
-  final double averageRating;
+  double averageRating;
   final String facultyName;
   final String facultyReference;
 
@@ -14,4 +14,13 @@ class FacultySummaryData {
           averageRating: map['avg_rating'].toDouble(),
           facultyName: map['fac_name'],
           facultyReference: map['fac_ref']);
+  
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map['avg_rating'] = averageRating;
+    map['fac_name'] = facultyName;
+    map['fac_ref'] = facultyReference;
+
+    return map;
+  }
 }

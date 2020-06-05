@@ -51,4 +51,26 @@ class Review {
       title: map['title'],
       universityName: map['university_name'],
       universityReference: map['university_reference']);
+
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map['author'] = author;
+    map['author_reference'] = authorReference;
+    map['cons'] = cons;
+    map['course_subjects_rating'] = courseSubjectsRating;
+    map['explanations_rating'] = explanationsRating;
+    map['faculty_name'] = facultyName;
+    map['faculty_reference'] = facultyReference;
+    map['professor_first_name'] = professorFirstName;
+    map['professor_last_name'] = professorLastName;
+    map['professor_reference'] = professorReference;
+    map['pros'] = pros;
+    map['punctuality_rating'] = punctualityRating;
+    map['rating'] = rating;
+    map['title'] = title;
+    map['university_name'] = universityName;
+    map['university_reference'] = universityReference;
+
+    return map;
+  }
 }

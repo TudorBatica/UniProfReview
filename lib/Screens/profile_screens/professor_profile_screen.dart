@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:professor_review/models/review_summary_professor.dart';
 import 'package:professor_review/screens/profile_screens/faculty_profile_screen.dart';
 import 'package:professor_review/screens/review_screen.dart';
 import 'package:professor_review/screens/profile_screens/university_profile_screen.dart';
 import 'package:professor_review/models/professor.dart';
+import 'package:professor_review/screens/submit_review_screen.dart';
 import 'package:professor_review/services/database_service.dart';
 import 'package:professor_review/widgets/loading.dart';
 import 'package:professor_review/widgets/profile_screen_header.dart';
@@ -15,7 +17,7 @@ class ProfessorProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _professor = Provider.of<Professor>(context);
-
+    var _user = Provider.of<FirebaseUser>(context);
     return _professor == null
         ? Loading()
         : Scaffold(
@@ -25,7 +27,7 @@ class ProfessorProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // professor info header
-                  _profileScreenHeader(context, _professor),
+                  _profileScreenHeader(context, _professor, _user.uid),
                   // reviews section
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   Padding(
@@ -49,7 +51,7 @@ class ProfessorProfileScreen extends StatelessWidget {
           );
   }
 
-  ProfileScreenHeader _profileScreenHeader(context, professor) {
+  ProfileScreenHeader _profileScreenHeader(context, professor, userID) {
     return ProfileScreenHeader(
       image: Image.asset('images/professor.png'),
       information: Column(
@@ -102,8 +104,28 @@ class ProfessorProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomInformation: TwoWeightsBox(
-          boldedText: professor.averageRating.toString(), normalText: "Rating"),
+      bottomInformation: Row(
+        children: <Widget>[
+          TwoWeightsBox(
+              boldedText: professor.averageRating.toString(),
+              normalText: "Rating"),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.025),
+          GestureDetector(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StreamProvider(
+                    create: (_) => DatabaseService.instance.userProfile(userID),
+                    child: SubmitReviewScreen(
+                      professor: professor,
+                      currentUserID: userID,
+                    ),
+                  ),
+                )),
+            child: TwoWeightsBox(boldedText: "Add", normalText: "Review"),
+          )
+        ],
+      ),
     );
   }
 
@@ -131,7 +153,6 @@ class ProfessorProfileScreen extends StatelessWidget {
     }
     // return a scrollable row with the list of reviews
     return SingleChildScrollView(
-        scrollDirection: Axis.vertical, child: Row(children: reviewTiles));
+        scrollDirection: Axis.horizontal, child: Row(children: reviewTiles));
   }
-
 }

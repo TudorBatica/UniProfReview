@@ -1,9 +1,11 @@
-/*import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:professor_review/models/faculty.dart';
-import 'package:professor_review/models/professor.dart';
 import 'package:professor_review/models/review.dart';
+import 'package:professor_review/models/review_summary_professor.dart';
+import 'package:professor_review/models/review_summary_user.dart';
+import 'package:professor_review/models/top_university_preview_data.dart';
 import 'package:professor_review/models/university.dart';
-import 'package:tuple/tuple.dart';
+import 'package:professor_review/services/home_screen_data_service.dart';
 
 class ReviewSubmissionService {
   static final ReviewSubmissionService _instance =
@@ -12,140 +14,196 @@ class ReviewSubmissionService {
   ReviewSubmissionService._privateConstructor();
   static ReviewSubmissionService get instance => _instance;
 
-  Future submitReview(Professor professor, Review review) async {
-    double profNewAvgRating = await _updateProfessorDocument(professor, review);
-    Tuple2 facultyRatings =
-        await _updateFacultyDocument(professor, review, profNewAvgRating);
-    await _updateUniversityDocument(
-        professor, review, facultyRatings.item2, facultyRatings.item1);
+  Future<void> submitReview(Review review) async {
+    Firestore.instance.runTransaction((transaction) async {
+      // create the review document
+      _createReviewDocument(review).then((reviewDocument) {
+        // update user's profile
+        _updateUserProfile(review, reviewDocument.documentID);
+        // update professor's profile
+        _updateProfessorProfile(review, reviewDocument.documentID)
+            .then((professorsNewRating) {
+          // update faculty's profile
+          _updateFacultyProfile(review, professorsNewRating).then(
+              // update university's profile
+              (facultyNewRating) {
+            _updateUniversityProfile(review, facultyNewRating).then(
+                // update top rated universities
+                (value) {
+              print("!!!!!!!!!!!!!!!!!!!!!" + value.name + "  " + value.reference);
+              HomeScreenDataService.instance.updateTopRatedUniversities(value);
+            });
+          });
+        });
+      });
+    });
   }
 
-  // returns professor's new average rating
-  Future<double> _updateProfessorDocument(
-      Professor professor, Review review) async {
+  // create the review document
+  // returns the document reference
+  Future<DocumentReference> _createReviewDocument(Review review) async {
     var firestore = Firestore.instance;
-    // add the review to the professor's collection
-    var professorsReviews =
-        firestore.collection('professors/' + professor.documentID + '/reviews');
-    professorsReviews.add(review.map);
+    var docReference =
+        await firestore.collection("reviews").add(review.toMap());
+    return docReference;
+  }
 
-    // compute professor's new average rating
-    double profNewAvgRating;
-    if (professor.averageRating == 0) {
-      profNewAvgRating = review.rating;
-    } else {
-      profNewAvgRating = (professor.numberOfReviews * professor.averageRating +
-              review.rating) /
-          (professor.numberOfReviews + 1);
-    }
+  // update the user profile
+  Future<void> _updateUserProfile(
+      Review review, String reviewDocumentReference) async {
+    // create the review to be added in the user's reviews array
+    var reviewSummaryData = ReviewSummaryUser(
+        professorsFirstName: review.professorFirstName,
+        professorsLastName: review.professorLastName,
+        rating: review.rating,
+        reviewReference: reviewDocumentReference,
+        title: review.title);
+    // get the current number of reviews
+    // and the current average rating
+    var usersDocument =
+        Firestore.instance.collection('users').document(review.authorReference);
+    int numberOfReviews;
+    double currentAverageRating;
+    await usersDocument.get().then((value) {
+      numberOfReviews = value.data['no_of_reviews'];
+      currentAverageRating = value.data['avg_rating'].toDouble();
+    });
+    // compute the new average rating
+    var newAverageRating = currentAverageRating +
+        (review.rating - currentAverageRating) / (numberOfReviews + 1);
+    newAverageRating = double.parse(newAverageRating.toStringAsFixed(2));
+    // update user's data
+    usersDocument.updateData({
+      'reviews': FieldValue.arrayUnion([reviewSummaryData.toMap()]),
+      'no_of_reviews': FieldValue.increment(1),
+      'avg_rating': newAverageRating
+    });
+  }
 
-    // upload the updated data to firestore
-    var professorsDocument =
-        firestore.collection('professors').document(professor.documentID);
+  // update professor's profile
+  // returns professor's new avg rating
+  Future<double> _updateProfessorProfile(
+      Review review, String reviewDocumentReference) async {
+    // create the review to be added to the professor's reviews array
+    var reviewSummaryData = ReviewSummaryProfessor(
+        author: review.author,
+        rating: review.rating,
+        reviewReference: reviewDocumentReference,
+        title: review.title);
+    // get the current number of reviews
+    // and the current average rating
+    var professorsDocument = Firestore.instance
+        .collection('professors')
+        .document(review.professorReference);
+    int numberOfReviews;
+    double currentAverageRating;
+    await professorsDocument.get().then((value) {
+      numberOfReviews = value.data['no_of_reviews'];
+      currentAverageRating = value.data['avg_rating'].toDouble();
+    });
+    // compute the new average rating
+    var newAverageRating = currentAverageRating +
+        (review.rating - currentAverageRating) / (numberOfReviews + 1);
+    newAverageRating = double.parse(newAverageRating.toStringAsFixed(2));
+    // update professor's data
     professorsDocument.updateData({
-      "avg_rating": profNewAvgRating,
-      "no_of_reviews": FieldValue.increment(1)
+      'reviews': FieldValue.arrayUnion([reviewSummaryData.toMap()]),
+      'no_of_reviews': FieldValue.increment(1),
+      'avg_rating': newAverageRating
     });
 
-    return profNewAvgRating;
+    return newAverageRating;
   }
 
-  // returns a tuple where the first value is the faculty's old average rating
-  // and the second value is the updated average rating
-  Future<Tuple2> _updateFacultyDocument(
-      Professor professor, Review review, double profNewAvgRating) async {
-    var firestore = Firestore.instance;
-
-    // retrieve the faculty
-    var facultyDocument = await firestore
+  // updates faculty's profile
+  // and returns faculty's new rating
+  Future<double> _updateFacultyProfile(
+      Review review, double professorsNewRating) async {
+    // get the and parse faculty's profile
+    var facultyDocument = Firestore.instance
         .collection('faculties')
-        .document(professor.facultyReference)
-        .get();
-    var faculty = Faculty.fromFirestoreDocument(facultyDocument);
-    print(faculty.city + " " + faculty.country + " " +faculty.documentID + " " +faculty.noOfProfessors.toString() + 
-    "" + faculty.universityName + " " + faculty.universityReference + " " + faculty.professors.length.toString());
-    // compute new average rating
-    double facNewAvgRating;
-    if (faculty.avgRating == 0) {
-      facNewAvgRating = review.rating;
-    } else {
-      facNewAvgRating = faculty.avgRating +
-          ((profNewAvgRating - professor.averageRating) /
-              faculty.noOfProfessors);
-    }
-    print("new avg" + facNewAvgRating.toString());
-    print(faculty.professors[0].toMap());
-    print(faculty.professors[0].professorReference);
-    print(professor.documentID);
-    // update professor's summary data
-    var toDelete;
-    var toAdd;
-    for (int i = 0; i < faculty.professors.length; i++) {
-      if (faculty.professors[i].professorReference == professor.documentID) {
-        toDelete = faculty.professors[i].toMap();
-        print("toDelete done");
-        faculty.professors[i].avgRating = profNewAvgRating;
-        faculty.professors[i].noOfReviews ++;
-        toAdd = faculty.professors[i].toMap();
-        break;
+        .document(review.facultyReference);
+    Faculty faculty;
+    await facultyDocument
+        .get()
+        .then((value) => faculty = Faculty.fromMap(value.data));
+    // compute the new average rating
+    double newAverageRating = faculty.averageRating +
+        (professorsNewRating - faculty.averageRating) /
+            faculty.numberOfProfessors;
+    newAverageRating = double.parse(newAverageRating.toStringAsFixed(2));
+    // modify the reviewed professor in the professors array
+    var professorsOldProfile;
+    var professorsNewProfile;
+    for (var professor in faculty.professors) {
+      if (professor.professorReference != review.professorReference) {
+        continue;
       }
-    }
-    print(toAdd.toString());
-    print(toDelete.toString());
-    print("did sth in update faculty document");
-    // upload updated data to firestore
-    await firestore.collection('faculties').document(faculty.documentID).updateData(
-        {"avg_rating": facNewAvgRating, 
-        "professors": FieldValue.arrayRemove([toDelete])});
-    firestore.collection('faculties').document(faculty.documentID).updateData({
-      "professors": FieldValue.arrayUnion([toAdd])
-    });
-
-
-    return Tuple2<double, double>(faculty.avgRating, facNewAvgRating);
-  }
-}
-
-Future _updateUniversityDocument(Professor professor, Review review,
-    double facNewAvgRating, double facOldAvgRating) async {
-  // retrieve the university
-  var firestore = Firestore.instance;
-  var universityDocument = await firestore
-      .collection('universities')
-      .document(professor.universityReference)
-      .get();
-  var university = University.fromFirestoreDocument(universityDocument);
-
-  // compute new university average rating
-  double newUniAvgRating;
-  if (university.avgRating == 0) {
-    newUniAvgRating = review.rating;
-  } else {
-    newUniAvgRating =
-        university.avgRating + ((facNewAvgRating - facOldAvgRating) / university.noOfFaculties);
-  }
-  // update faculty's summary data
-  var toAdd;
-  var toRemove;
-  for (var faculty in university.faculties) {
-    if (faculty.facultyReference == professor.facultyReference) {
-      toRemove = faculty.toMap();
-      faculty.avgRating = facNewAvgRating;
-      toAdd = faculty.toMap();
+      // keep a copy of the old object
+      // so it can be removed from the array
+      professorsOldProfile = professor.toMap();
+      // create the updated profile
+      professor.averageRating = professorsNewRating;
+      professorsNewProfile = professor.toMap();
       break;
     }
+    // update faculty's profile
+    await facultyDocument.updateData({
+      'professors': FieldValue.arrayRemove([professorsOldProfile]),
+      'avg_rating': newAverageRating
+    });
+    facultyDocument.updateData({
+      'professors': FieldValue.arrayUnion([professorsNewProfile]),
+    });
+
+    return newAverageRating;
   }
 
-  print("did sth in uni update");
-  // upload the updated data to firestore
-  await firestore
-      .collection('universities')
-      .document(university.documentID)
-      .updateData(
-          {"avg_rating": newUniAvgRating, "faculties": FieldValue.arrayRemove([toRemove])});
-  firestore
-      .collection('universities')
-      .document(university.documentID)
-      .updateData(
-          {"faculties": FieldValue.arrayUnion([toAdd])});
-}*/
+  // updates uni's profile
+  // the data returned is used to updated
+  // the top universities document
+  Future<TopUniversityPreviewData> _updateUniversityProfile(
+      Review review, double facultyNewRating) async {
+    // get the and parse university's profile
+    var uniDocument = Firestore.instance
+        .collection('universities')
+        .document(review.universityReference);
+    University university;
+    await uniDocument
+        .get()
+        .then((value) => university = University.fromMap(value.data));
+    // compute the new average rating
+    double newAverageRating = university.averageRating +
+        (facultyNewRating - university.averageRating) /
+            university.faculties.length;
+    newAverageRating = double.parse(newAverageRating.toStringAsFixed(2));
+    // modify the faculty in the faculties array
+    var facultysOldProfile;
+    var facultysNewProfile;
+    for (var faculty in university.faculties) {
+      if (faculty.facultyReference != review.facultyReference) {
+        continue;
+      }
+      // keep a copy of the old object
+      // so it can be removed from the array
+      facultysOldProfile = faculty.toMap();
+      // create the updated profile
+      faculty.averageRating = facultyNewRating;
+      facultysNewProfile = faculty.toMap();
+      break;
+    }
+    // update uni's profile
+    await uniDocument.updateData({
+      'faculties': FieldValue.arrayRemove([facultysOldProfile]),
+      'avg_rating': newAverageRating
+    });
+    uniDocument.updateData({
+      'faculties': FieldValue.arrayUnion([facultysNewProfile]),
+    });
+
+    return TopUniversityPreviewData(
+        name: review.universityName,
+        rating: newAverageRating,
+        reference: review.universityReference);
+  }
+}

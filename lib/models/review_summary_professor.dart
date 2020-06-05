@@ -17,4 +17,14 @@ class ReviewSummaryProfessor {
           rating: map['rating'].toDouble(),
           reviewReference: map['review_reference'],
           title: map['title']);
+  
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map['author'] = author;
+    map['rating'] = rating;
+    map['review_reference'] = reviewReference;
+    map['title'] = title;
+
+    return map;
+  }
 }
