@@ -22,7 +22,9 @@ class AuthService {
       // create user's reviews document
       CollectionReference usersCollection = Firestore.instance.collection('users');
       usersCollection.document(firebaseUser.uid).setData({
-      'avg_rating' : 0
+      'avg_rating' : 0,
+      'no_of_reviews' : 0,
+      'username' : username
     }); 
 
       // return result

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:professor_review/models/top3_universities.dart';
 import 'package:professor_review/models/user.dart';
 import 'package:professor_review/screens/profile_screens/user_profile_screen.dart';
 import 'package:professor_review/services/auth_service.dart';
@@ -13,6 +14,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _userProfile = Provider.of<User>(context);
+    var _topUnis = Provider.of<Top3Universities>(context);
+    
 
     return _userProfile == null ? Loading() : Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,

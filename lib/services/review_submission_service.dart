@@ -3,7 +3,9 @@ import 'package:professor_review/models/faculty.dart';
 import 'package:professor_review/models/review.dart';
 import 'package:professor_review/models/review_summary_professor.dart';
 import 'package:professor_review/models/review_summary_user.dart';
+import 'package:professor_review/models/top_university_preview_data.dart';
 import 'package:professor_review/models/university.dart';
+import 'package:professor_review/services/home_screen_data_service.dart';
 
 class ReviewSubmissionService {
   static final ReviewSubmissionService _instance =
@@ -22,10 +24,16 @@ class ReviewSubmissionService {
         _updateProfessorProfile(review, reviewDocument.documentID)
             .then((professorsNewRating) {
           // update faculty's profile
-          _updateFacultyProfileScreen(review, professorsNewRating).then(
+          _updateFacultyProfile(review, professorsNewRating).then(
               // update university's profile
-              (facultyNewRating) =>
-                  _updateUniversityProfileScreen(review, facultyNewRating));
+              (facultyNewRating) {
+            _updateUniversityProfile(review, facultyNewRating).then(
+                // update top rated universities
+                (value) {
+              print("!!!!!!!!!!!!!!!!!!!!!" + value.name + "  " + value.reference);
+              HomeScreenDataService.instance.updateTopRatedUniversities(value);
+            });
+          });
         });
       });
     });
@@ -107,9 +115,9 @@ class ReviewSubmissionService {
     return newAverageRating;
   }
 
-  // updates faculty's profile screen
+  // updates faculty's profile
   // and returns faculty's new rating
-  Future<double> _updateFacultyProfileScreen(
+  Future<double> _updateFacultyProfile(
       Review review, double professorsNewRating) async {
     // get the and parse faculty's profile
     var facultyDocument = Firestore.instance
@@ -151,7 +159,10 @@ class ReviewSubmissionService {
     return newAverageRating;
   }
 
-  Future<void> _updateUniversityProfileScreen(
+  // updates uni's profile
+  // the data returned is used to updated
+  // the top universities document
+  Future<TopUniversityPreviewData> _updateUniversityProfile(
       Review review, double facultyNewRating) async {
     // get the and parse university's profile
     var uniDocument = Firestore.instance
@@ -189,5 +200,10 @@ class ReviewSubmissionService {
     uniDocument.updateData({
       'faculties': FieldValue.arrayUnion([facultysNewProfile]),
     });
+
+    return TopUniversityPreviewData(
+        name: review.universityName,
+        rating: newAverageRating,
+        reference: review.universityReference);
   }
 }

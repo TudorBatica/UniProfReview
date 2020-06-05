@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:professor_review/models/faculty.dart';
 import 'package:professor_review/models/professor.dart';
 import 'package:professor_review/models/review.dart';
+import 'package:professor_review/models/top3_universities.dart';
 import 'package:professor_review/models/university.dart';
 import 'package:professor_review/models/user.dart';
 
 class DatabaseService {
-  //* this is the service that interacts with
-  //* the firestore database
+  //* this is the service that fetches data
+  //* from the firestore database
 
   static final DatabaseService instance = DatabaseService._privateConstructor();
   DatabaseService._privateConstructor();
@@ -46,7 +47,8 @@ class DatabaseService {
           .collection('professors')
           .document(professorDocumentID)
           .snapshots()
-          .asyncMap((event) => Professor.fromFirestoreDocument(event.data, professorDocumentID));
+          .asyncMap((event) =>
+              Professor.fromFirestoreDocument(event.data, professorDocumentID));
     } catch (e) {
       print(e.toString());
       return null;
@@ -73,6 +75,19 @@ class DatabaseService {
           .document(universityDocumentID)
           .snapshots()
           .asyncMap((event) => University.fromMap(event.data));
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Stream<Top3Universities> topUniversities() {
+    try {
+      return Firestore.instance
+          .collection('summary')
+          .document('top_universities')
+          .snapshots()
+          .asyncMap((event) => Top3Universities.fromFirestoreMap(event.data));
     } catch (e) {
       print(e.toString());
       return null;
