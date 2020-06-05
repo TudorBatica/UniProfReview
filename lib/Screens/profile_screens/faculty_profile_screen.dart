@@ -112,6 +112,6 @@ class FacultyProfileScreen extends StatelessWidget {
     }
     // return a scrollable row with the list of reviews
     return SingleChildScrollView(
-        scrollDirection: Axis.vertical, child: Row(children: professorTiles));
+        scrollDirection: Axis.horizontal, child: Row(children: professorTiles));
   }
 }
