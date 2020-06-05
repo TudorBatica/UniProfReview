@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
               create: (_) => AuthService.instance.user),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Professor Review',
           theme: ThemeData(
             fontFamily: 'Muli',
