@@ -1,4 +1,4 @@
-/*import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:professor_review/models/faculty.dart';
 import 'package:professor_review/models/professor.dart';
 import 'package:professor_review/models/review.dart';
@@ -12,7 +12,11 @@ class ReviewSubmissionService {
   ReviewSubmissionService._privateConstructor();
   static ReviewSubmissionService get instance => _instance;
 
-  Future submitReview(Professor professor, Review review) async {
+  Future submitReview(Review review) async {
+
+  }
+
+  /*Future submitReview(Professor professor, Review review) async {
     double profNewAvgRating = await _updateProfessorDocument(professor, review);
     Tuple2 facultyRatings =
         await _updateFacultyDocument(professor, review, profNewAvgRating);
@@ -147,5 +151,5 @@ Future _updateUniversityDocument(Professor professor, Review review,
       .collection('universities')
       .document(university.documentID)
       .updateData(
-          {"faculties": FieldValue.arrayUnion([toAdd])});
-}*/
+          {"faculties": FieldValue.arrayUnion([toAdd])});*/
+}

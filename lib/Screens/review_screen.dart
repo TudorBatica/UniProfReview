@@ -4,6 +4,7 @@ import 'package:professor_review/screens/profile_screens/professor_profile_scree
 import 'package:professor_review/screens/profile_screens/user_profile_screen.dart';
 import 'package:professor_review/services/database_service.dart';
 import 'package:professor_review/widgets/custom_app_bar.dart';
+import 'package:professor_review/widgets/entity_box.dart';
 import 'package:provider/provider.dart';
 
 class ReviewScreen extends StatelessWidget {
@@ -22,17 +23,20 @@ class ReviewScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StreamProvider(
-                                create: (_) => DatabaseService.instance
-                                    .userProfile(_review.authorReference),
-                                child: UserProfileScreen(),
-                              ))),
-                  child: _entityBox(context, "Review Author", _review.author,
-                      AssetImage('images/user.png')),
-                ),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StreamProvider(
+                                  create: (_) => DatabaseService.instance
+                                      .userProfile(_review.authorReference),
+                                  child: UserProfileScreen(),
+                                ))),
+                    child: EntityBox(
+                      context: context,
+                      image: AssetImage('images/user.png'),
+                      title: "Review Author",
+                      name: _review.author,
+                    )),
                 GestureDetector(
                   onTap: () => Navigator.push(
                       context,
@@ -42,13 +46,13 @@ class ReviewScreen extends StatelessWidget {
                                     .professor(_review.professorReference),
                                 child: ProfessorProfileScreen(),
                               ))),
-                  child: _entityBox(
-                      context,
-                      "Professor",
-                      _review.professorFirstName +
+                  child: EntityBox(
+                      context: context,
+                      title: "Professor",
+                      name: _review.professorFirstName +
                           " " +
                           _review.professorLastName,
-                      AssetImage('images/professor.png')),
+                      image: AssetImage('images/professor.png')),
                 )
               ],
             ),
@@ -155,55 +159,6 @@ class ReviewScreen extends StatelessWidget {
                 )
               ])),
         ));
-  }
-
-  // used to display the professor and the author of this review
-  Widget _entityBox(context, title, name, image) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w900,
-            fontSize: 20.0,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(1, 1),
-                blurRadius: 10.0,
-                color: Colors.black87,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-        Text(
-          name,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 20.0,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(1, 1),
-                blurRadius: 10.0,
-                color: Colors.black87,
-              ),
-            ],
-          ),
-        )
-      ]),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          image: DecorationImage(
-              image: image,
-              fit: BoxFit.fill,
-              colorFilter: ColorFilter.mode(
-                  Theme.of(context).primaryColorDark.withOpacity(0.2),
-                  BlendMode.dstATop))),
-    );
   }
 
   // used to store review information

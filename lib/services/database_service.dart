@@ -46,7 +46,7 @@ class DatabaseService {
           .collection('professors')
           .document(professorDocumentID)
           .snapshots()
-          .asyncMap((event) => Professor.fromMap(event.data));
+          .asyncMap((event) => Professor.fromFirestoreDocument(event.data, professorDocumentID));
     } catch (e) {
       print(e.toString());
       return null;
