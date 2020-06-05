@@ -16,6 +16,7 @@ After that, simply download or clone the project and run
 First, you need to create an account (or login if you already have one).  
 
 ![](images/screenshots/auth.jpeg)
+<img src="/uploads/d19fcc3d3b4d313c8cd7960a343463b6/table.png"  width="200" height="600">
 
 On the home screen, you will find a search bar, a list of the best rated 
 universities and two icons on the right corner of the top bar. 
