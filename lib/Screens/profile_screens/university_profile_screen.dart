@@ -14,36 +14,6 @@ class UniversityProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var _university = Provider.of<University>(context);
 
-    //* screen header
-    final _screenHeader = ProfileScreenHeader(
-      image: Image.asset('images/university.jpg'),
-      information: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            _university.name,
-            style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w800,
-                color: Theme.of(context).primaryColorDark),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.02,
-          ),
-          Text(
-            "${_university.city}, ${_university.country}",
-            style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).primaryColorDark),
-          ),
-        ],
-      ),
-      bottomInformation: TwoWeightsBox(
-          boldedText: _university.averageRating.toString(),
-          normalText: "Rating"),
-    );
-
     return _university == null
         ? Loading()
         : Scaffold(
@@ -53,7 +23,7 @@ class UniversityProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // info header
-                  _screenHeader,
+                  _profileScreenHeader(context, _university),
                   // faculties section
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   Padding(
@@ -75,6 +45,37 @@ class UniversityProfileScreen extends StatelessWidget {
               ),
             ),
           );
+  }
+
+  Widget _profileScreenHeader(context, University university) {
+    return ProfileScreenHeader(
+      image: Image.asset('images/university.jpg'),
+      information: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            university.name,
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w800,
+                color: Theme.of(context).primaryColorDark),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.02,
+          ),
+          Text(
+            "${university.city}, ${university.country}",
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).primaryColorDark),
+          ),
+        ],
+      ),
+      bottomInformation: TwoWeightsBox(
+          boldedText: university.averageRating.toString(),
+          normalText: "Rating"),
+    );
   }
 
   Widget _facultiesScrollView(context, faculties) {
