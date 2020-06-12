@@ -18,6 +18,7 @@ class ProfessorProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var _professor = Provider.of<Professor>(context);
     var _user = Provider.of<FirebaseUser>(context);
+
     return _professor == null
         ? Loading()
         : Scaffold(
