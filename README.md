@@ -5,12 +5,15 @@ Developed using Flutter and Firebase.
 The objective of this app is to provide the much needed transparency
 that our society demands and valuable feedback to the professors.  
 
-## How to build
+## How to install
 
-This project is being developed using Flutter, so you need to set up Flutter
-on your computer. You can find links to tutorials in the wiki.  
-After that, simply download or clone the project and run
-`flutter run`.  
+First of all, this app only works on Android for now.  
+You can find the .apk files for arm64, armeabi and x86_64 architectures in
+the out/release folder.  
+If for some reason you cannot install the .apk, setup Flutter on your computer. 
+You can find links to tutorials in the wiki.
+After that, download or clone the project and run, connect your Android device
+to your computer and run `flutter install`.  
 
 ## How to use the app
 
