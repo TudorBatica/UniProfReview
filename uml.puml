@@ -1,0 +1,406 @@
+@startuml
+set namespaceSeparator ::
+
+class "professor_review::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::main.dart::MyApp"
+
+class "professor_review::models::faculty.dart::Faculty" {
+  +double averageRating
+  +String city
+  +String country
+  +String name
+  +int numberOfProfessors
+  +List<ProfessorSummaryData> professors
+  +String universityName
+  +String universityReference
+}
+
+class "professor_review::models::faculty_summary_data.dart::FacultySummaryData" {
+  +double averageRating
+  +String facultyName
+  +String facultyReference
+  +Map toMap()
+}
+
+class "professor_review::models::professor.dart::Professor" {
+  +double averageRating
+  +String documentReference
+  +String facultyName
+  +String facultyReference
+  +String firstName
+  +String lastName
+  +int numberOfReviews
+  +List<ReviewSummaryProfessor> reviews
+  +String universityName
+  +String universityReference
+}
+
+class "professor_review::models::professor_summary_data.dart::ProfessorSummaryData" {
+  +double averageRating
+  +String firstName
+  +String lastName
+  +int numberOfReviews
+  +String professorReference
+  +Map toMap()
+}
+
+class "professor_review::models::review.dart::Review" {
+  +String author
+  +String authorReference
+  +String cons
+  +double courseSubjectsRating
+  +double explanationsRating
+  +String facultyName
+  +String facultyReference
+  +String professorFirstName
+  +String professorLastName
+  +String professorReference
+  +String pros
+  +double punctualityRating
+  +double rating
+  +String title
+  +String universityName
+  +String universityReference
+  +Map toMap()
+}
+
+class "professor_review::models::review_summary_professor.dart::ReviewSummaryProfessor" {
+  +String author
+  +double rating
+  +String reviewReference
+  +String title
+  +Map toMap()
+}
+
+class "professor_review::models::review_summary_user.dart::ReviewSummaryUser" {
+  +String professorsFirstName
+  +String professorsLastName
+  +double rating
+  +String reviewReference
+  +String title
+  +Map toMap()
+}
+
+class "professor_review::models::search_result.dart::SearchResult" {
+  +String title
+  +String additionalInformation
+  +bool isUniversity
+  +String reference
+}
+
+class "professor_review::models::top3_universities.dart::Top3Universities" {
+  +TopUniversityPreviewData best
+  +TopUniversityPreviewData second
+  +TopUniversityPreviewData third
+}
+
+"professor_review::models::top3_universities.dart::Top3Universities" o-- "professor_review::models::top_university_preview_data.dart::TopUniversityPreviewData"
+
+class "professor_review::models::top_university_preview_data.dart::TopUniversityPreviewData" {
+  +String name
+  +double rating
+  +String reference
+  +Map toMap()
+}
+
+class "professor_review::models::university.dart::University" {
+  +double averageRating
+  +String city
+  +String country
+  +List<FacultySummaryData> faculties
+  +String name
+}
+
+class "professor_review::models::user.dart::User" {
+  +double averageRating
+  +List<ReviewSummaryUser> reviews
+  +String username
+}
+
+class "professor_review::screens::auth_screens::auth_screen.dart::AuthScreen" {
+  +Widget build()
+  -Widget _topContainer()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::auth_screens::auth_screen.dart::AuthScreen"
+
+class "professor_review::screens::auth_screens::login_screen.dart::LoginScreen" {
+  +_LoginScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "professor_review::screens::auth_screens::login_screen.dart::LoginScreen"
+
+class "professor_review::screens::auth_screens::login_screen.dart::_LoginScreenState" {
+  -GlobalKey<FormState> _formKey
+  -bool _loading
+  -String _email
+  -String _password
+  -String _errorMessage
+  +Widget build()
+  -Widget _loginForm()
+}
+
+"professor_review::screens::auth_screens::login_screen.dart::_LoginScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "professor_review::screens::auth_screens::login_screen.dart::_LoginScreenState"
+
+class "professor_review::screens::auth_screens::register_screen.dart::RegisterScreen" {
+  +_RegisterScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "professor_review::screens::auth_screens::register_screen.dart::RegisterScreen"
+
+class "professor_review::screens::auth_screens::register_screen.dart::_RegisterScreenState" {
+  -GlobalKey<FormState> _formKey
+  -bool _loading
+  -String _email
+  -String _username
+  -String _password
+  -String _errorMessage
+  +Widget build()
+  -Widget _registerForm()
+}
+
+"professor_review::screens::auth_screens::register_screen.dart::_RegisterScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "professor_review::screens::auth_screens::register_screen.dart::_RegisterScreenState"
+
+class "professor_review::screens::home_screen.dart::HomeScreen" {
+  +Widget build()
+  -Future _showLogoutAlert()
+  -Widget _topUniversitiesScrollView()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::home_screen.dart::HomeScreen"
+
+class "professor_review::screens::home_screen_selector.dart::HomeScreenSelector" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::home_screen_selector.dart::HomeScreenSelector"
+
+class "professor_review::screens::list_screen.dart::ListScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::list_screen.dart::ListScreen"
+
+class "professor_review::screens::profile_screens::faculty_profile_screen.dart::FacultyProfileScreen" {
+  +Widget build()
+  -Widget _profileScreenHeader()
+  -Widget _professorsScrollView()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::profile_screens::faculty_profile_screen.dart::FacultyProfileScreen"
+
+class "professor_review::screens::profile_screens::professor_profile_screen.dart::ProfessorProfileScreen" {
+  +Widget build()
+  -ProfileScreenHeader _profileScreenHeader()
+  -Widget _reviewsScrollView()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::profile_screens::professor_profile_screen.dart::ProfessorProfileScreen"
+
+class "professor_review::screens::profile_screens::university_profile_screen.dart::UniversityProfileScreen" {
+  +Widget build()
+  -Widget _profileScreenHeader()
+  -Widget _facultiesScrollView()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::profile_screens::university_profile_screen.dart::UniversityProfileScreen"
+
+class "professor_review::screens::profile_screens::user_profile_screen.dart::UserProfileScreen" {
+  +Widget build()
+  -Widget _reviewsScrollView()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::profile_screens::user_profile_screen.dart::UserProfileScreen"
+
+class "professor_review::screens::review_screen.dart::ReviewScreen" {
+  +Widget build()
+  -Widget _reviewScreenAppBar()
+  -Widget _reviewInformationContainer()
+  -Widget _ratingContainer()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::screens::review_screen.dart::ReviewScreen"
+
+class "professor_review::screens::submit_review_screen.dart::SubmitReviewScreen" {
+  +Professor professor
+  +String currentUserID
+  +_SubmitReviewScreenState createState()
+}
+
+"professor_review::screens::submit_review_screen.dart::SubmitReviewScreen" o-- "professor_review::models::professor.dart::Professor"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "professor_review::screens::submit_review_screen.dart::SubmitReviewScreen"
+
+class "professor_review::screens::submit_review_screen.dart::_SubmitReviewScreenState" {
+  -String _title
+  -String _pros
+  -String _cons
+  -double _courseSubjectsRating
+  -double _explanationsRating
+  -double _punctualityRating
+  -bool _loading
+  +Widget build()
+  -Widget _reviewScreenAppBar()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "professor_review::screens::submit_review_screen.dart::_SubmitReviewScreenState"
+
+class "professor_review::services::auth_service.dart::AuthService" {
+  {static} -FirebaseAuth _firebaseAuth
+  {static} -AuthService _instance
+  {static} +AuthService instance
+  +Stream<FirebaseUser> user
+  +Future registerWithEmailAndPassword()
+  +Future signInWithEmailAndPassword()
+  +Future signOut()
+}
+
+"professor_review::services::auth_service.dart::AuthService" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"professor_review::services::auth_service.dart::AuthService" o-- "professor_review::services::auth_service.dart::AuthService"
+"professor_review::services::auth_service.dart::AuthService" o-- "dart::async::Stream<FirebaseUser>"
+
+class "professor_review::services::database_service.dart::DatabaseService" {
+  {static} +DatabaseService instance
+  +Stream userProfile()
+  +Stream review()
+  +Stream professor()
+  +Stream faculty()
+  +Stream university()
+  +Stream topUniversities()
+  +Future fetchUniversitiesAndProfessorsByName()
+}
+
+"professor_review::services::database_service.dart::DatabaseService" o-- "professor_review::services::database_service.dart::DatabaseService"
+
+class "professor_review::services::home_screen_data_service.dart::HomeScreenDataService" {
+  {static} -HomeScreenDataService _instance
+  {static} -CollectionReference _homeScreenDataCollection
+  {static} +HomeScreenDataService instance
+  +Future updateTopRatedUniversities()
+}
+
+"professor_review::services::home_screen_data_service.dart::HomeScreenDataService" o-- "professor_review::services::home_screen_data_service.dart::HomeScreenDataService"
+"professor_review::services::home_screen_data_service.dart::HomeScreenDataService" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference"
+
+class "professor_review::services::review_submission_service.dart::ReviewSubmissionService" {
+  {static} -ReviewSubmissionService _instance
+  {static} +ReviewSubmissionService instance
+  +Future submitReview()
+  -Future _createReviewDocument()
+  -Future _updateUserProfile()
+  -Future _updateProfessorProfile()
+  -Future _updateFacultyProfile()
+  -Future _updateUniversityProfile()
+}
+
+"professor_review::services::review_submission_service.dart::ReviewSubmissionService" o-- "professor_review::services::review_submission_service.dart::ReviewSubmissionService"
+
+class "professor_review::widgets::custom_app_bar.dart::CustomAppBar" {
+  +double height
+  +Widget leadingText
+  +Widget trailingWidget
+  +Size preferredSize
+  +Widget build()
+}
+
+"professor_review::widgets::custom_app_bar.dart::CustomAppBar" o-- "flutter::src::widgets::framework.dart::Widget"
+"professor_review::widgets::custom_app_bar.dart::CustomAppBar" o-- "dart::ui::Size"
+"flutter::src::widgets::preferred_size.dart::PreferredSize" <|-- "professor_review::widgets::custom_app_bar.dart::CustomAppBar"
+
+class "professor_review::widgets::custom_button.dart::CustomButton" {
+  +Function onPressed
+  +double height
+  +double width
+  +Text text
+  +Icon icon
+  +Widget build()
+}
+
+"professor_review::widgets::custom_button.dart::CustomButton" o-- "flutter::src::widgets::text.dart::Text"
+"professor_review::widgets::custom_button.dart::CustomButton" o-- "flutter::src::widgets::icon.dart::Icon"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::custom_button.dart::CustomButton"
+
+class "professor_review::widgets::entity_box.dart::EntityBox" {
+  +BuildContext context
+  +ImageProvider image
+  +String name
+  +String title
+  +Widget build()
+}
+
+"professor_review::widgets::entity_box.dart::EntityBox" o-- "flutter::src::widgets::framework.dart::BuildContext"
+"professor_review::widgets::entity_box.dart::EntityBox" o-- "flutter::src::painting::image_provider.dart::ImageProvider"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::entity_box.dart::EntityBox"
+
+class "professor_review::widgets::entity_screen_header.dart::EntityScreenHeader" {
+  +double averageRating
+  +String averageRatingTitle
+  +String entityName
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::entity_screen_header.dart::EntityScreenHeader"
+
+class "professor_review::widgets::loading.dart::Loading" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::loading.dart::Loading"
+
+class "professor_review::widgets::profile_screen_header.dart::ProfileScreenHeader" {
+  +Widget bottomInformation
+  +Image image
+  +Widget information
+  +Widget build()
+}
+
+"professor_review::widgets::profile_screen_header.dart::ProfileScreenHeader" o-- "flutter::src::widgets::framework.dart::Widget"
+"professor_review::widgets::profile_screen_header.dart::ProfileScreenHeader" o-- "flutter::src::widgets::image.dart::Image"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::profile_screen_header.dart::ProfileScreenHeader"
+
+class "professor_review::widgets::review_list_tile.dart::ReviewListTile" {
+  +String middleText
+  +double rating
+  +String title
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::review_list_tile.dart::ReviewListTile"
+
+class "professor_review::widgets::title_and_rating_list_tile.dart::TitleAndRatingListTile" {
+  +Image image
+  +String title
+  +String rating
+  +Widget build()
+}
+
+"professor_review::widgets::title_and_rating_list_tile.dart::TitleAndRatingListTile" o-- "flutter::src::widgets::image.dart::Image"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::title_and_rating_list_tile.dart::TitleAndRatingListTile"
+
+class "professor_review::widgets::two_part_card.dart::TwoPartCard" {
+  +Widget bottom
+  +Image image
+  +double imageHeight
+  +double imageWidth
+  +double width
+  +Widget build()
+}
+
+"professor_review::widgets::two_part_card.dart::TwoPartCard" o-- "flutter::src::widgets::framework.dart::Widget"
+"professor_review::widgets::two_part_card.dart::TwoPartCard" o-- "flutter::src::widgets::image.dart::Image"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::two_part_card.dart::TwoPartCard"
+
+class "professor_review::widgets::two_weights_box.dart::TwoWeightsBox" {
+  +String boldedText
+  +String normalText
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "professor_review::widgets::two_weights_box.dart::TwoWeightsBox"
+
+
+@enduml
