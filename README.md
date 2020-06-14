@@ -5,10 +5,10 @@ Developed using Flutter and Firebase.
 The objective of this app is to provide the much needed transparency
 that our society demands and valuable feedback to the professors.  
 
-## How to build  
+## How to build
 
 This project is being developed using Flutter, so you need to set up Flutter
-on your computer.  
+on your computer. You can find links to tutorials in the wiki.  
 After that, simply download or clone the project and run
 `flutter run`.  
 
