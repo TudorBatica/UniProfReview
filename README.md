@@ -7,7 +7,7 @@ that our society demands and valuable feedback to the professors.
 
 ## How to install
 
-First of all, this app only works on Android for now.  
+First of all, this app only works on Android(Android 5.0 or newer) for now.  
 You can find the .apk files for arm64, armeabi and x86_64 architectures in
 the out/release folder.  
 If for some reason you cannot install the .apk, setup Flutter on your computer. 
